@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamletEmmanuel-Aplicada2-P2", "HamletEmmanuel-Aplicada2-P2\HamletEmmanuel-Aplicada2-P2.csproj", "{59DC756B-A7AD-45B3-BC0C-1C2F46DD2243}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{88A0298E-7346-4001-81D3-B62846DC2655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{F77B51A4-2203-4DFC-9F60-EF52C9C72DDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{59DC756B-A7AD-45B3-BC0C-1C2F46DD2243}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59DC756B-A7AD-45B3-BC0C-1C2F46DD2243}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59DC756B-A7AD-45B3-BC0C-1C2F46DD2243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A0298E-7346-4001-81D3-B62846DC2655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A0298E-7346-4001-81D3-B62846DC2655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A0298E-7346-4001-81D3-B62846DC2655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A0298E-7346-4001-81D3-B62846DC2655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77B51A4-2203-4DFC-9F60-EF52C9C72DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77B51A4-2203-4DFC-9F60-EF52C9C72DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77B51A4-2203-4DFC-9F60-EF52C9C72DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77B51A4-2203-4DFC-9F60-EF52C9C72DDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
