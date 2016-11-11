@@ -14,6 +14,21 @@ namespace BLL
         public int Monto { get; set; }
 
         public List<VentasDetalle> DetalleLista = new List<VentasDetalle>();
+        public List<Articulos> CantidadArticulo = new List<Articulos>();
+
+        public void AgregarArticulo(int articuloId, int  cantidad,int precio)
+        {
+            DetalleLista.Add(new VentasDetalle(articuloId, cantidad, precio));
+        }
+
+        public void ObtenerArticulo(string descripcion,int articuloId, int cantidad, int precio)
+        {
+            DetalleLista.Add(new VentasDetalle(descripcion, articuloId, cantidad, precio));
+        }
+
+        public void AgregarCantidadArticulo(int existencia, int articuloId) {
+            CantidadArticulo.Add(new Articulos(existencia,articuloId));
+        }
 
         public Ventas() { }
 
@@ -30,7 +45,10 @@ namespace BLL
                 foreach (VentasDetalle ventaDetalle in DetalleLista)
                 {
                     conexion.Ejecutar(String.Format("Insert into VentasDetalle(VentaId, ArticuloId, Cantidad, Precio) Values({0}, {1}, {2}, {3})", retorno,ventaDetalle.ArticuloId , ventaDetalle.Cantidad,ventaDetalle.Precio));
+
+                    conexion.Ejecutar(String.Format("Update Articulos set Existencia-={0} where ArticuloId={1}", ventaDetalle.Cantidad, ventaDetalle.ArticuloId));
                 }
+
             }
             catch (Exception ex) { throw ex; }
             return retorno > 0;
@@ -42,15 +60,20 @@ namespace BLL
             ConexionDb conexion = new ConexionDb();
             try
             {
-                retorno = conexion.Ejecutar(string.Format("Update set Fecha='{0}', Monto={1} where VentaId={2} ",this.Fecha, this.Monto, this.VentaId));
+                retorno = conexion.Ejecutar(string.Format("Update Ventas set Fecha='{0}', Monto={1} where VentaId={2} ",this.Fecha, this.Monto, this.VentaId));
 
-                conexion.Ejecutar(String.Format("Delete from VentasDetalle where VentaId =", this.VentaId));
+                conexion.Ejecutar(String.Format("Delete from VentasDetalle where VentaId ={0}", this.VentaId));
 
                 foreach (VentasDetalle ventaDetalle in DetalleLista)
                 {
                     conexion.Ejecutar(String.Format("Insert into VentasDetalle (VentaId, ArticuloId, Cantidad, Precio) Values({0}, {1}, {2}, {3})", this.VentaId, ventaDetalle.ArticuloId, ventaDetalle.Cantidad, ventaDetalle.Precio));
                 }
-            }catch(Exception ex) { throw ex; }
+                foreach (Articulos articulo in CantidadArticulo)
+                {
+                    conexion.Ejecutar(String.Format("Update Articulos set Existencia={0} where ArticuloId={1}", articulo.Existencia, articulo.ArticuloId));
+                }
+            }
+            catch(Exception ex) { throw ex; }
             return retorno;
         }
 
@@ -60,7 +83,12 @@ namespace BLL
             ConexionDb conexion = new ConexionDb();
             try
             {
-                retorno = conexion.Ejecutar(string.Format("Delete from VentasDetalle where VentaId = "+ this.VentaId+";"+"Delete from Ventas where VentaId=",this.VentaId));
+                retorno = conexion.Ejecutar(string.Format("Delete from VentasDetalle where VentaId = "+ this.VentaId+";"+"Delete from Ventas where VentaId={0}",this.VentaId));
+
+                foreach (VentasDetalle ventaDetalle in DetalleLista)
+                {
+                    conexion.Ejecutar(String.Format("Update Articulos set Existencia+={0} where ArticuloId={1}", ventaDetalle.Cantidad, ventaDetalle.ArticuloId));
+                }
 
             }
             catch (Exception ex) { throw ex; }
@@ -80,7 +108,11 @@ namespace BLL
                 this.Monto = (int)dt.Rows[0]["Monto"];
                 
 
-                DetalleDt = conexion.ObtenerDatos(String.Format("Select * from VentasDetalle  where VentaId=" + IdBuscado));
+                DetalleDt = conexion.ObtenerDatos(String.Format("Select Descripcion, A.ArticuloId, Cantidad, A.Precio from VentasDetalle as VD inner join Articulos as A on Vd.ArticuloId=A.ArticuloId  where VentaId=" + IdBuscado));
+                foreach (DataRow row in DetalleDt.Rows)
+                {
+                    ObtenerArticulo(row["Descripcion"].ToString(),(int)row["ArticuloId"], (int)row["Cantidad"],(int)row["Precio"]);
+                }
             }
             return dt.Rows.Count > 0;
         }

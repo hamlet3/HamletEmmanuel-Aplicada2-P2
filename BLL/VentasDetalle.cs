@@ -13,8 +13,26 @@ namespace BLL
         public int Id { get; set; }
         public int VentaId { get; set; }
         public int ArticuloId { get; set; }
+        public string Descripcion { get; set; }
         public int Cantidad { get; set; }
         public int Precio { get; set; }
+
+        public VentasDetalle() { }
+
+        public VentasDetalle(int articuloId,int cantidad, int precio)
+        {
+            this.ArticuloId = articuloId;
+            this.Cantidad = cantidad;
+            this.Precio = precio;
+        }
+
+        public VentasDetalle(string descripcion,int articuloId, int cantidad, int precio)
+        {
+            this.Descripcion = descripcion;
+            this.ArticuloId = articuloId;
+            this.Cantidad = cantidad;
+            this.Precio = precio;
+        }
 
         public override bool Buscar(int IdBuscado)
         {

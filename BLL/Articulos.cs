@@ -16,9 +16,10 @@ namespace BLL
 
         public Articulos() { }
 
-        public override bool Buscar(int IdBuscado)
+        public Articulos(int existencia, int articuloId)
         {
-            throw new NotImplementedException();
+            this.Existencia = existencia;
+            this.ArticuloId = articuloId;
         }
 
         public override bool Editar()
@@ -36,14 +37,29 @@ namespace BLL
             throw new NotImplementedException();
         }
 
+        public override bool Buscar(int IdBuscado)
+        {
+            DataTable dt = new DataTable();
+            ConexionDb conexion = new ConexionDb();
+
+            dt = conexion.ObtenerDatos(String.Format("Select * from Articulos where ArticuloId=" + IdBuscado));
+            if (dt.Rows.Count > 0)
+            {
+                this.ArticuloId = (int)dt.Rows[0]["ArticuloId"];
+                this.Descripcion = dt.Rows[0]["Descripcion"].ToString();
+                this.Existencia = (int)dt.Rows[0]["Existencia"];
+                this.Precio = (int)dt.Rows[0]["Precio"];
+            }
+            return dt.Rows.Count > 0;
+        }
         public override DataTable Listado(string Campos, string Condicion, string Orden)
         {
             ConexionDb Conexion = new ConexionDb();
             string Ordenar = "";
             if (Orden.Equals(""))
-                Ordenar = " Oreder by " + Orden;
+                Ordenar = " Order by " + Orden;
 
-            return Conexion.ObtenerDatos(string.Format("Select "+Campos+" From Articulos where "+Condicion + Ordenar));
+            return Conexion.ObtenerDatos(string.Format("Select "+Campos+" From Articulos where "+Condicion + Orden));
             
         }
     }
